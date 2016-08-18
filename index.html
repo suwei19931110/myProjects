@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>lunbotu</title>
+	<link rel="stylesheet" type="text/css" href="styles/index2.css">
+	<script type="text/javascript">
+	window.onload = function(){
+		var container = document.getElementById('container');
+		var list = document.getElementById('list');
+		var buttons = document.getElementById('buttons').getElementsByTagName('span');
+		var prev = document.getElementById('prev');
+		var next = document.getElementById('next');
+		var index = 1;
+		var timer ;
+
+		function showButton(){
+			for (var i = 0;i < buttons.length;i++){
+				if (buttons[i].className == 'on'){
+					buttons[i].className = '';
+				}
+
+			}
+			buttons[index - 1].className = 'on';
+		}
+
+
+		function animate(offset){
+
+			var newLeft = parseInt(list.style.left) + offset;
+
+			list.style.left = newLeft +'px';
+
+			if (newLeft > -560){
+				list.style.left = -2800 + 'px';
+			}
+			if (newLeft < -2800){
+				list.style.left = -560 +'px';
+			}
+
+		}
+
+		function play() {
+			timer = setInterval(function(){
+				next.onclick();
+				},3000);
+		}
+		function stop(){
+			clearInterval(timer);
+		}
+
+		prev.onclick = function(){
+			if(index == 1){
+				index = 5;
+			}else{
+				index -=1;
+			}
+			showButton();
+			animate(560);
+		}
+		next.onclick = function(){
+			if(index == 5){
+				index = 1;
+			}else{
+				index +=1;
+			}
+			showButton();
+			animate(-560);
+		}
+
+		for (var i =0;i<buttons.length;i++){
+			if(this.className == 'on'){
+				return;
+			}
+			buttons[i].onclick = function(){
+				var myindex = parseInt(this.getAttribute('index'));
+				var offset = -560 * (myindex - index);
+				animate(offset);
+				index = myindex;
+				showButton();
+			}
+
+
+		}
+		container.onmouseover = stop;
+		container.onmouseout = play;
+
+		play();
+
+	}
+
+
+</script>
+</head>
+<body>
+<div class="container" id="container">
+	<div id="list" style="left: -560px">
+		<img src="images/img5.jpg" alt="5">
+		<img src="images/img1.jpg" alt="1">
+		<img src="images/img2.jpg" alt="2" style="height: 374px;width: 560px">
+		<img src="images/img3.jpg" alt="3">
+		<img src="images/img4.jpg" alt="4">
+		<img src="images/img5.jpg" alt="5">
+        <img src="images/img1.jpg" alt="1">
+
+	</div>
+	<div class="buttons" id="buttons">
+		<span index="1" class="on"></span>
+		<span index="2"></span>
+		<span index="3"></span>
+		<span index="4"></span>
+		<span index="5"></span>
+	</div>
+	<a href="javascript:;" id="prev" class="arrow"><</a>
+	<a href="javascript:;" id="next" class="arrow">></a>
+</div>
+<script type="text/javascript" src="js/index2.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+</body>
+</html>
